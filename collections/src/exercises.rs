@@ -101,6 +101,37 @@ impl Company {
         let new_entry = self.organisation.entry(department).or_insert(vec![]);
         new_entry.push(name);
     }
+
+    fn add_employ_from_string(&mut self, mut employ: String) {
+        let first_keyword = String::from("Add");
+        let second_keyword = String::from(" to ");
+        let first_keyword = employ.find(&first_keyword);
+        let second_keyword = employ.find(&second_keyword);
+
+        let mut start_name: usize = 0;
+        let mut end_name: usize = 0;
+        match first_keyword {
+            Some(x) => start_name = x,
+            None =>{
+                println!("Missing first keyword Add");
+                return;
+            }
+        }
+
+        match second_keyword {
+            Some(x) => end_name = x,
+            None => {
+                println!("Mising second keyword to");
+                return;
+            }
+        }
+
+        employ.drain(..start_name+4);
+        let name: String = employ.drain(..end_name-4).collect();
+        employ.drain(..4);
+        println!("Name: {}, Department: {}", name, employ);    
+    }
+
 }
 
 
@@ -109,5 +140,10 @@ pub fn ex_3 () {
     // department in a company. For example, “Add Sally to Engineering” or “Add Amir to Sales.” Then let 
     // the user retrieve a list of all people in a department or all people in the company by department, 
     // sorted alphabetically.
+
+    let mut comp = Company {organisation: HashMap::new()};
+    let input_string = String::from("Add Sally Krieger to Engineering");
+    comp.add_employ_from_string(input_string);
+
 
 }
