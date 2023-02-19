@@ -108,8 +108,8 @@ impl Company {
         let first_keyword = employ.find(&first_keyword);
         let second_keyword = employ.find(&second_keyword);
 
-        let mut start_name: usize = 0;
-        let mut end_name: usize = 0;
+        let start_name: usize;
+        let end_name: usize;
         match first_keyword {
             Some(x) => start_name = x,
             None =>{
@@ -126,10 +126,20 @@ impl Company {
             }
         }
 
-        employ.drain(..start_name+4);
+        employ.drain(..start_name+4); 
         let name: String = employ.drain(..end_name-4).collect();
         employ.drain(..4);
-        println!("Name: {}, Department: {}", name, employ);    
+        println!("Name: {}, Department: {}", name, employ);
+        self.add_employ(employ, name)
+    }
+
+    fn print_emploies(& self) {
+        for department in self.organisation.to_owned() {
+            println!("Printing emploies for the {} department", department.0);
+            for employ in department.1 {
+                println!("{}", employ);
+            }
+        }
     }
 
 }
@@ -144,6 +154,6 @@ pub fn ex_3 () {
     let mut comp = Company {organisation: HashMap::new()};
     let input_string = String::from("Add Sally Krieger to Engineering");
     comp.add_employ_from_string(input_string);
-
+    comp.print_emploies()
 
 }
